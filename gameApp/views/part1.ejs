@@ -35,6 +35,10 @@ function create() {
 	//  We're going to be using physics, so enable the Arcade Physics system
      game.physics.startSystem(Phaser.Physics.ARCADE);
 
+//Frontière de l'univers
+		 game.world.setBounds(0, 0, 1920, 1920);
+
+
      //  A simple background for our game
      game.add.sprite(0, 0, 'sky');
 
@@ -66,13 +70,16 @@ function create() {
 		 aidKit.body.gravity.y = 9;
 
      // Here we create the ground.
-     var ground = platforms.create(0, game.world.height - 64, 'ground');
+		 	for (var i = 0; i < 20; i++)
+			{
+     		var ground = platforms.create(i*70, game.world.height - 64, 'ground');
+				//  Scale it to fit the width of the game (the original sprite is 400x32 in size)
+				ground.scale.setTo(2, 2);
 
-     //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-     ground.scale.setTo(2, 2);
+				//  This stops it from falling away when you jump on it
+				ground.body.immovable = true;
+	 		}
 
-     //  This stops it from falling away when you jump on it
-     ground.body.immovable = true;
 
      //  Now let's create two ledges
      var ledge = platforms.create(400, 400, 'ground');
@@ -85,6 +92,10 @@ function create() {
 
 		 // The player and its settings
 	player = game.add.sprite(32, game.world.height - 150, 'dude');
+
+	//Camera follows player
+			   game.camera.follow(player);
+
 
 	//  We need to enable physics on the player
 	game.physics.arcade.enable(player);
@@ -206,6 +217,13 @@ function extraLife(player,firstAid)
 	life ++;
 	lifeText.text = 'Lives: ' + life;
 	firstAid.kill();
+}
+
+function render() {
+
+    game.debug.cameraInfo(game.camera, 32, 32);
+    game.debug.spriteCoords(player, 32, 500);
+
 }
 
 </script>

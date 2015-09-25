@@ -1,0 +1,5 @@
+---Views: Tout les .ejs (html dedans)
+---gruntfile.js toutes les applis grunts (même délire que le .json mais pour grunt). Grunt te permet d'installer une suite de modules qui facilitent le develloppement
+--config :  tout les fichiers nodejs. Celui qui t'intéressent est le fichier route.js qui te permet de router tes fichiers .ejs cf doc sails pour type de routage. http://www.programwitherik.com/five-tips-when-working-with-routes-on-sails-js/ (à lire en diagonale)
+--Controllers: dedans tu mets des fichiers nodejs qui vont gérer les routes
+--assets: fichiers images et js
