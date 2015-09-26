@@ -19,12 +19,10 @@ var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload:
 function preload() {
 	game.load.tilemap('level1', '../images/level1.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles-1', '../images/tiles-1.png');
-		game.load.spritesheet('dude', '../images/dude.png', 32, 48);
 		game.load.spritesheet('droid', '../images/droid.png', 32, 32);
+		game.load.spritesheet('dude', '../images/dude.png', 32, 48);
   //  game.load.image('starSmall', '../images/star.png');
   //  game.load.image('starBig', '../images/star2.png');
-	game.load.image('sky', '../images/sky.png');
-	 game.load.image('ground', '../images/platform.png');
 	 game.load.image('star', '../images/star.png');
 	 game.load.image('spikes','../images/spikes.png');
 	 game.load.image('aid','../images/firstaid.png');
@@ -35,16 +33,17 @@ var score = 0;
 var scoreText;
 var life = 5;
 var lifeText;
-var platforms;
 var map;
 var tileset;
 var layer;
 var player;
+var droid;
 var facing = 'left';
 var jumpTimer = 0;
+var timerAidKit;
 var cursors;
-var jumpButton;
 var bg;
+var baddyMovTimer;
 
 function create() {
 	//  We're going to be using physics, so enable the Arcade Physics system
@@ -71,12 +70,6 @@ function create() {
 	 // layer.debug = true;
 
 	 layer.resizeWorld();
-//Frontière de l'univers
-		// game.world.setBounds(0, 0, 1920, 1920);
-
-
-     //  A simple background for our game
-  //   game.add.sprite(0, 0, 'sky');
 
  //Adds gravity to everything
 	game.physics.arcade.gravity.y = 250;
@@ -94,6 +87,7 @@ function create() {
 		 firstAid.enableBody = true;
 
 
+
 		 //Here we create some spikes
 		 for (var i = 0; i < 6; i++)
 		 {
@@ -101,11 +95,15 @@ function create() {
 				 var spike = spikes.create(i * 70, game.world.height - 95, 'spikes');
 		 }
 
-		 //Randomly creates a firstAid kit
-		 var aidKit = firstAid.create(Math.random() * 800,0,'aid');
-		 //  Let gravity do its thing
-		 aidKit.body.gravity.y = 9;
-
+		 //The droid and it's settings
+	 	 droid = game.add.sprite(647, 960, 'droid');
+		 game.physics.enable(droid, Phaser.Physics.ARCADE);
+		 game.physics.arcade.enable(droid);
+		 droid.body.bounce.y=0.2;
+		 droid.body.collideWorldBounds=true;
+		 droid.body.setSize(20, 32, 5, 16);
+		 droid.animations.add('left', [0, 1], 10, true);
+		 droid.animations.add('right', [2,3], 10, true);
 
 
 
@@ -114,21 +112,14 @@ function create() {
 		 // The player and its settings
 	player = game.add.sprite(32, game.world.height - 150, 'dude');
 	game.physics.enable(player, Phaser.Physics.ARCADE);
-
 	//Camera follows player
 			   game.camera.follow(player);
-
-
 	//  We need to enable physics on the player
 	game.physics.arcade.enable(player);
-
 	//  Player physics properties. Give the little guy a slight bounce.
 	player.body.bounce.y = 0.2;
 	player.body.collideWorldBounds = true;
   player.body.setSize(20, 32, 5, 16);
-	//player.body.gravity.y = 300;
-	player.body.collideWorldBounds = true;
-
 	//  Our two animations, walking left and right.
 	player.animations.add('left', [0, 1, 2, 3], 10, true);
 	 player.animations.add('turn', [4], 20, true);
@@ -159,6 +150,19 @@ function create() {
 	//Life text set up
 	lifeText = game.add.text(16, 40, 'Lives: 5', { fontSize: '32px', fill: '#fff' });
 	lifeText.fixedToCamera = true;
+
+	//  Create our Timer
+    timerAidKit = game.time.create(false);
+		baddyMovTimer = game.time.create(false);
+
+    //  Set a TimerEvent to occur after x seconds
+    timerAidKit.loop(150000*Math.random(), dropAidKit, this);
+		baddyMovTimer.loop(1000,droidMovement,this);
+
+    //  Start the timer running - this is important!
+    //  It won't start automatically, allowing you to hook it to button events and the like.
+    timerAidKit.start();
+		baddyMovTimer.start();
 }
 
 
@@ -168,10 +172,12 @@ function update() {
 	 game.physics.arcade.collide(stars,layer);
 	 game.physics.arcade.collide(spikes,layer);
 	 game.physics.arcade.collide(firstAid,layer);
+	 game.physics.arcade.collide(droid,layer);
 
 
 	 //  Reset the players velocity (movement)
 	player.body.velocity.x = 0;
+	droid.body.velocity.x =0;
 
 	if (cursors.left.isDown)
 	{
@@ -248,10 +254,27 @@ function extraLife(player,firstAid)
 	firstAid.kill();
 }
 
+function dropAidKit()
+{
+	//Randomly creates a firstAid kit
+	var aidKit = firstAid.create(Math.random() * 800,0,'aid');
+	//  Let gravity do its thing
+	aidKit.body.gravity.y = 9;
+}
+
+function droidMovement() {
+
+	if( droid.x >= 647)
+  game.add.tween(droid).to( { x:647 -droid.x -102 }, 4000, Phaser.Easing.Linear.None, true);
+	else if ( droid.x <= 555) {
+		  game.add.tween(droid).to( { x: 555 - droid.x + 102 }, 4000, Phaser.Easing.Linear.None, true);
+	}
+}
+
 function render() {
 
-    //game.debug.cameraInfo(game.camera, 32, 32);
-    //game.debug.spriteCoords(player, 32, 500);
+    game.debug.cameraInfo(game.camera, 32, 32);
+    game.debug.spriteCoords(player, 32, 500);
 
 }
 
