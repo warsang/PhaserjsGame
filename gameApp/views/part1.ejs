@@ -89,7 +89,7 @@ function create() {
 
 
 		 //Here we create some spikes
-		 for (var i = 0; i < 6; i++)
+		 for (var i = 0; i < 5; i++)
 		 {
 				 //  Create a spike inside of the 'spikes' group
 				 var spike = spikes.create(i * 70, game.world.height - 95, 'spikes');
@@ -214,12 +214,13 @@ function update() {
 	game.physics.arcade.overlap(player, stars, collectStar, null, this);
 
 	//checks if player is overlapping a spike
-	game.physics.arcade.overlap(player, spikes, hitSpike, null, this);
+	game.physics.arcade.overlap(player, spikes, loseLife, null, this);
 
 	//checks if player is overlapping an aidKit
 	game.physics.arcade.overlap(player, firstAid, extraLife, null, this);
 
-
+	//checks if player is overlapping droid
+	game.physics.arcade.overlap(player,droid,loseLife,null,this);
 }
 
 function collectStar (player, star) {
@@ -233,10 +234,10 @@ scoreText.text = 'Score: ' + score;
 
 }
 
-function hitSpike (player,spike)
+function loseLife (player)
 {
 	//if player hits a Spike
-if (life = 0)
+if (life <= 0)
 {
 	player.kill();
 		lifeText.text = 'Game over';
@@ -264,10 +265,14 @@ function dropAidKit()
 
 function droidMovement() {
 
+	//	Here you'll notice we are using a relative value for the tween.
+			//	You can specify a number as a string with either + or - at the start of it.
+			//	When the tween starts it will take the sprites current X value and add +x to it.
+
 	if( droid.x >= 647)
-  game.add.tween(droid).to( { x:647 -droid.x -102 }, 4000, Phaser.Easing.Linear.None, true);
-	else if ( droid.x <= 555) {
-		  game.add.tween(droid).to( { x: 555 - droid.x + 102 }, 4000, Phaser.Easing.Linear.None, true);
+  game.add.tween(droid).to( { x: '-102' }, 4000, Phaser.Easing.Linear.None, true);
+	else if(droid.x <=555) {
+		  game.add.tween(droid).to( { x: '+102' }, 4000, Phaser.Easing.Linear.None, true);
 	}
 }
 
