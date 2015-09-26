@@ -27,6 +27,8 @@ function preload() {
 	 game.load.image('spikes','../images/spikes.png');
 	 game.load.image('aid','../images/firstaid.png');
 	 game.load.image('background', '../images/background2.png');
+	 //  Firefox doesn't support mp3 files, so use ogg
+  game.load.audio('backgroundMusic', ['../audio/music1.mp3', '../audio/music1.ogg']);
 }
 
 var score = 0;
@@ -44,6 +46,7 @@ var timerAidKit;
 var cursors;
 var bg;
 var baddyMovTimer;
+var music;
 
 function create() {
 	//  We're going to be using physics, so enable the Arcade Physics system
@@ -126,6 +129,11 @@ function create() {
 	player.animations.add('right', [5, 6, 7, 8], 10, true);
 
 	cursors = game.input.keyboard.createCursorKeys();
+
+	//Music stuff
+    music = game.add.audio('backgroundMusic');
+
+    music.play();
 
 	stars = game.add.group();
 
@@ -276,11 +284,28 @@ function droidMovement() {
 	}
 }
 
+/*function changeVolume(pointer) {
+
+    if (pointer.y < 100)
+    {
+        music.mute = false;
+    }
+    else if (pointer.y < 300)
+    {
+        music.volume += 0.1;
+    }
+    else
+    {
+        music.volume -= 0.1;
+    }
+
+}*/
+
 function render() {
 
     game.debug.cameraInfo(game.camera, 32, 32);
     game.debug.spriteCoords(player, 32, 500);
-
+		game.debug.soundInfo(music, 20, 32);
 }
 
 </script>
