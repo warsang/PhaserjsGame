@@ -49,6 +49,14 @@ module.exports.routes = {
   ***************************************************************************/
   '/page':{
     view: 'part1'
+  },
+  '/login': {
+    controller: 'AuthController',
+    action: 'login'
+  },
+  '/logout': {
+    controller: 'AuthController',
+    action: 'logout'
   }
 
 };
