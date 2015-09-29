@@ -8,6 +8,11 @@
  var passport = require('passport');
  module.exports = {
 
+   _config: {
+         actions: false,
+         shortcuts: false,
+         rest: false
+     },
    login: function (req, res) {
      res.view();
    },
@@ -15,21 +20,25 @@
      passport.authenticate('local', function(err, user, info) {
        if ((err) || (!user)) {
          return res.send({
-         message: 'login failed'
+         message: 'login failed',
+         user: user
          });
          res.send(err);
        }
        req.logIn(user, function(err) {
          if (err) res.send(err);
          return res.send({
-           message: 'login successful'
+           message: 'login successful',
+           user: user
          });
        });
      })(req, res);
    },
    logout: function (req,res){
      req.logout();
-     res.send('logout successful');
+     res.redirect('/login');
+   },
+   signup: function (req,res){
    }
  };
 
