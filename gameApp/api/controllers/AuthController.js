@@ -39,6 +39,7 @@
      res.redirect('/login');
    },
    signup: function (req,res){
+     res.view();
    }
  };
 
