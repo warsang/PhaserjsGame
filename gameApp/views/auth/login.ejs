@@ -1,14 +1,30 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+
+
+<body>
 <form method="post" action="/login">
 <div>
-<input type="text" name="username">
+<label> Nom d'utilisateur : </label> <input type="text" name="username">
 </div>
 <div>
-<input type="password" name="password">
+<label> Mot de passe : </label> <input type="password" name="password">
 </div>
 <div>
-<input type="submit">
+<input type="submit" name="submit" value="Valider">
 </div>
 </form>
+</body>
+
 </html>
