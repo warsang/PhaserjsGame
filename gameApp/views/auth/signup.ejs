@@ -4,12 +4,17 @@
 <head>
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
+<link rel="stylesheet" media="screen" type="text/css" title="CSS" href="style.css"/>
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
 <!-- Latest compiled JavaScript -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
 </head>
 <body>
 
@@ -21,98 +26,89 @@
       <div>
         <ul class="nav navbar-nav">
           <li><a href="page">Jeu</a></li>
-          <li><a href="#">Récompenses</a></li>
+          <li><a href="#"><span class="glyphicon glyphicon-gift"></span>  Récompenses</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="login">Login</a></li>
+          <li><a href="login"><span class="glyphicon glyphicon-log-in"></span>  Login</a></li>
           <li class="active"><a href="signup">Inscription</a></li>
         </ul>
       </div>
     </div>
+  </nav>
 
-<div class="container-fluid">
+<div class="container-fluid" background-color="#8CC3E3">
 
 <div class="row">
-<div class="col-xs-12" style="background-color:#002F2F;">
+<div class="col-xs-12">
   <div class="container">
   <div class="jumbotron">
-    <h1>Bannière à venir</h1>
+    <h1> Bannière à venir</h1>
   </div>
 </div>
 </div>
 </div>
 <div class="row">
-<div class="col-xs-12" style="background-color:#A7A37E;">
-  <br/>
-</div>
-</div>
-<div class="row">
-<div class="col-xs-12" style="background-color:#A7A37E;">
-<br/>
+<div class="col-xs-12">
+  <br/><br/>
 </div>
 </div>
 
 <div class="row">
-<div class="col-xs-4" style="background-color:#A7A37E;">
-<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+<div class="col-xs-4">
+<br/>
 </div>
-<div class="col-xs-4" style="background-color:#046380;">
+<div class="col-xs-4">
   <br/>
-  <h1>Signup</h1>
-  <form method="POST" action="/user">
-    <input type="text" name="username">
-    <input type="password" name="password">
-    <input type="submit" value="submit">
-  </form>
+  <div class="panel panel-info">
+  <div class="panel-heading">Inscription</div>
+  <div class="panel-body">
+    <br/>
+    <form method="post" action="/login">
+    <div class="form-group">
+          <label for="mail" >
+            Adresse e-mail
+            <p class="text-warning">Votre e-mail doit-être de TSP ou TEM</p></label>
+          <input type="email" class="form-control" id="mail">
+          <!--data-toggle="email" title="Votre e-mail doit-être de TSP ou TEM"-->
+    </div>
+    <div class="form-group">
+          <label for="pwd">Mot de passe : </label>
+          <input type="password" class="form-control" id="pwd">
+    </div>
+    <div class="form-group">
+          <label for="pwd">Confirmer le mot de passe : </label>
+          <input type="password" class="form-control" id="pwd">
+    </div>
+    <div>
+    <center>
+      <input type="submit" class="btn btn-info" value="S'inscrire">
+    </center>
+    </div>
+    </form>
+    <br/>
+</div>
+</div>
   <br/>
   </div>
 </div>
-<div class="col-xs-4" style="background-color:#A7A37E;">
-<br/><br/><br/><br/><br/><br/><br/><br/><br/>
-</div>
-</div>
-
-<div class="row">
-<div class="col-xs-12" style="background-color:#A7A37E;">
+<div class="col-xs-4">
 <br/>
 </div>
 </div>
+
 <div class="row">
-<div class="col-xs-12" style="background-color:#A7A37E;">
-<br/>
-</div>
-</div>
-<div class="row">
-<div class="col-xs-12" style="background-color:#A7A37E;">
-  <br/>
+<div class="col-xs-12">
+<br/><br/><br/>
 </div>
 </div>
 
 <div class="row">
-<div class="col-xs-12" style="background-color:#002F2F;">
-footer
+<div class="col-xs-12">
+<div class="well well-sm"><center>Footer</center></div>
 </div>
 </div>
 
 </div>
-
-<!-- taille des zones à changer
-<form method="post" action="/login">
-<div class="form-group">
-      <label for="mail">Adresse e-mail :</label>
-      <input type="email" class="form-control" id="mail">
-</div>
-<div class="form-group">
-      <label for="pwd">Mot de passe : </label>
-      <input type="password" class="form-control" id="pwd">
-</div>
-<div>
-  <input type="submit" class="btn btn-info" value="Valider">
-</div>
-</form>
-
-</div>
--->
 
 </body>
 
