@@ -47,22 +47,40 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
+  '/reward':{
+    view: 'reward'
+  },
   '/page':{
     view: 'part1'
   },
-  '/login': {
-    controller: 'AuthController',
-    action: 'login'
+  'get /login': {
+    controller: 'PostController',
+    action: 'loginget'
+  },
+  'post /login': {
+    controller: 'PostController',
+    action: 'loginpost'
   },
   '/logout': {
-    controller: 'AuthController',
-    action: 'logout'
+    controller: 'PostController',
+    action: 'open'
   },
 
-  '/signup':
+  'get /register':
+  {
+    view: 'auth/signup'
+  },
+
+  'post /register':
   {
     controller: 'AuthController',
-    action: 'signup'
+    action: 'register'
+  },
+
+  '/test':
+  {
+    controller: 'PostController',
+    action: 'restricted'
   }
 
 };

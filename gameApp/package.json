@@ -16,18 +16,18 @@
     "grunt-contrib-jst": "~0.6.0",
     "grunt-contrib-less": "0.11.1",
     "grunt-contrib-uglify": "~0.4.0",
-    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-watch": "^0.5.3",
     "grunt-sails-linker": "~0.9.5",
     "grunt-sync": "~0.0.4",
     "include-all": "~0.1.3",
     "jade": "^1.11.0",
-    "passport": "^0.3.0",
-    "passport-local": "^1.0.0",
     "phaser": "^2.4.3",
     "rc": "~0.5.0",
     "sails": "~0.11.0",
     "sails-disk": "~0.10.0",
-    "sails-mongo": "^0.11.4"
+    "sails-mongo": "^0.11.4",
+    "waterlock": "^0.1.0",
+    "waterlock-local-auth": "0.0.6"
   },
   "scripts": {
     "debug": "node debug app.js",
