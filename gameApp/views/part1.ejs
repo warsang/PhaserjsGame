@@ -13,8 +13,162 @@
 <body>
 
 <script type="text/javascript">
+//  The core game loop
 
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
+    var PhaserGame = function () {
+
+        this.background = null;
+        this.foreground = null;
+
+        this.player = null;
+        this.cursors = null;
+        this.speed = 300;
+
+        this.weapons = [];
+        this.currentWeapon = 0;
+        this.weaponName = null;
+
+    };
+
+    PhaserGame.prototype = {
+
+        init: function () {
+
+            this.game.renderer.renderSession.roundPixels = true;
+
+            this.physics.startSystem(Phaser.Physics.ARCADE);
+
+        },
+
+        preload: function () {
+
+            //  We need this because the assets are on Amazon S3
+            //  Remove the next 2 lines if running locally
+            this.load.baseURL = 'http://files.phaser.io.s3.amazonaws.com/codingtips/issue007/';
+            this.load.crossOrigin = 'anonymous';
+
+            this.load.image('background', 'assets/back.png');
+            this.load.image('foreground', 'assets/fore.png');
+            this.load.image('player', 'assets/ship.png');
+            this.load.bitmapFont('shmupfont', 'assets/shmupfont.png', 'assets/shmupfont.xml');
+
+            for (var i = 1; i <= 11; i++)
+            {
+                this.load.image('bullet' + i, 'assets/bullet' + i + '.png');
+            }
+
+            //  Note: Graphics are not for use in any commercial project
+
+        },
+
+        create: function () {
+
+            this.background = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'background');
+            this.background.autoScroll(-40, 0);
+
+            this.weapons.push(new Weapon.SingleBullet(this.game));
+            this.weapons.push(new Weapon.FrontAndBack(this.game));
+            this.weapons.push(new Weapon.ThreeWay(this.game));
+            this.weapons.push(new Weapon.EightWay(this.game));
+            this.weapons.push(new Weapon.ScatterShot(this.game));
+            this.weapons.push(new Weapon.Beam(this.game));
+            this.weapons.push(new Weapon.SplitShot(this.game));
+            this.weapons.push(new Weapon.Pattern(this.game));
+            this.weapons.push(new Weapon.Rockets(this.game));
+            this.weapons.push(new Weapon.ScaleBullet(this.game));
+            this.weapons.push(new Weapon.Combo1(this.game));
+            this.weapons.push(new Weapon.Combo2(this.game));
+
+            this.currentWeapon = 0;
+
+            for (var i = 1; i < this.weapons.length; i++)
+            {
+                this.weapons[i].visible = false;
+            }
+
+            this.player = this.add.sprite(64, 200, 'player');
+
+            this.physics.arcade.enable(this.player);
+
+            this.player.body.collideWorldBounds = true;
+
+            this.foreground = this.add.tileSprite(0, 0, this.game.width, this.game.height, 'foreground');
+            this.foreground.autoScroll(-60, 0);
+
+            this.weaponName = this.add.bitmapText(8, 364, 'shmupfont', "ENTER = Next Weapon", 24);
+
+            //  Cursor keys to fly + space to fire
+            this.cursors = this.input.keyboard.createCursorKeys();
+
+            this.input.keyboard.addKeyCapture([ Phaser.Keyboard.SPACEBAR ]);
+
+            var changeKey = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+            changeKey.onDown.add(this.nextWeapon, this);
+
+        },
+
+        nextWeapon: function () {
+
+            //  Tidy-up the current weapon
+            if (this.currentWeapon > 9)
+            {
+                this.weapons[this.currentWeapon].reset();
+            }
+            else
+            {
+                this.weapons[this.currentWeapon].visible = false;
+                this.weapons[this.currentWeapon].callAll('reset', null, 0, 0);
+                this.weapons[this.currentWeapon].setAll('exists', false);
+            }
+
+            //  Activate the new one
+            this.currentWeapon++;
+
+            if (this.currentWeapon === this.weapons.length)
+            {
+                this.currentWeapon = 0;
+            }
+
+            this.weapons[this.currentWeapon].visible = true;
+
+            this.weaponName.text = this.weapons[this.currentWeapon].name;
+
+        },
+
+        update: function () {
+
+            this.player.body.velocity.set(0);
+
+            if (this.cursors.left.isDown)
+            {
+                this.player.body.velocity.x = -this.speed;
+            }
+            else if (this.cursors.right.isDown)
+            {
+                this.player.body.velocity.x = this.speed;
+            }
+
+            if (this.cursors.up.isDown)
+            {
+                this.player.body.velocity.y = -this.speed;
+            }
+            else if (this.cursors.down.isDown)
+            {
+                this.player.body.velocity.y = this.speed;
+            }
+
+            if (this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+            {
+                this.weapons[this.currentWeapon].fire(this.player);
+            }
+
+        }
+
+    };
+
+    game.state.add('Game', PhaserGame, true);
+
+/*var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { preload: preload, create: create, update: update, render: render });
 
 function preload() {
 	game.load.tilemap('level1', '../images/level1.json', null, Phaser.Tilemap.TILED_JSON);
@@ -23,6 +177,7 @@ function preload() {
 		game.load.spritesheet('dude', '../images/dude.png', 32, 48);
   //  game.load.image('starSmall', '../images/star.png');
   //  game.load.image('starBig', '../images/star2.png');
+	game.load.image('fireBullet','../images/fire.png')
 	 game.load.image('star', '../images/star.png');
 	 game.load.image('spikes','../images/spikes.png');
 	 game.load.image('aid','../images/firstaid.png');
@@ -49,7 +204,7 @@ var baddyMovTimer;
 var music;
 
 function create() {
-	//  We're going to be using physics, so enable the Arcade Physics system
+//  We're going to be using physics, so enable the Arcade Physics system
      game.physics.startSystem(Phaser.Physics.ARCADE);
 
 // Black
@@ -125,7 +280,7 @@ function create() {
   player.body.setSize(20, 32, 5, 16);
 	//  Our two animations, walking left and right.
 	player.animations.add('left', [0, 1, 2, 3], 10, true);
-	 player.animations.add('turn', [4], 20, true);
+	 player.animations.add('turplayern', [4], 20, true);
 	player.animations.add('right', [5, 6, 7, 8], 10, true);
 
 	cursors = game.input.keyboard.createCursorKeys();
@@ -171,6 +326,7 @@ function create() {
     //  It won't start automatically, allowing you to hook it to button events and the like.
     timerAidKit.start();
 		baddyMovTimer.start();
+		this.weapons.push((new Weapon.SingleBullet(this.game)));
 }
 
 
@@ -215,6 +371,9 @@ function update() {
 			player.body.velocity.y = -350;
 			jumpTimer = game.time.now + 750;
 	}
+
+
+
 
 
 
@@ -299,7 +458,7 @@ function droidMovement() {
         music.volume -= 0.1;
     }
 
-}*/
+}
 
 function render() {
 
@@ -307,7 +466,7 @@ function render() {
     game.debug.spriteCoords(player, 32, 500);
 		game.debug.soundInfo(music, 20, 32);
 }
-
+*/
 </script>
 
 </body>
