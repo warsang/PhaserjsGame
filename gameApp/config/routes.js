@@ -53,13 +53,13 @@ module.exports.routes = {
   '/page':{
     view: 'part1'
   },
-  'get /login': {
-    controller: 'PostController',
-    action: 'loginget'
-  },
   'post /login': {
     controller: 'PostController',
     action: 'loginpost'
+  },
+  '/login': {
+    controller: 'AuthController',
+    action: 'login'
   },
   '/logout': {
     controller: 'PostController',
