@@ -31,6 +31,9 @@ var droid4;
 var droid5;
 var droid6;
 var droid7;
+var stars;
+var spikes;
+var droids;
 var facing = 'left';
 var jumpTimer = 0;
 var w = 800;
@@ -96,12 +99,11 @@ function create() {
 
 
 
-  //Here we create some spikes
-  for (var i = 0; i < 5; i++)
-  {
-    //  Create a spike inside of the 'spikes' group
-    var spike = spikes.create(i * 70, game.world.height - 95, 'spikes');
-  }
+  var spikeRef = [
+    spikes.create(70, game.world.height - 95, 'spikes'),
+    spikes.create(140, game.world.height - 95, 'spikes'),
+    spikes.create(210, game.world.height - 95, 'spikes')
+  ];
 
   //The droid and it's settings
   droid = game.add.sprite(647, 960, 'droid');
