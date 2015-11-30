@@ -218,6 +218,8 @@ function create() {
   stars.create(427, 176, 'star');
   stars.create(694, 240, 'star');
   stars.create(304, 832, 'star');
+  stars.create(773, 784, 'star');
+  stars.create(954, 288, 'star');
 
   stars.forEach(function(star) {
     //  Let gravity do its thing
@@ -304,7 +306,7 @@ function update() {
     player.body.velocity.x = -150;
     player.animations.play('left');
     if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-      weapons[currentWeapon].fire(player);
+    //  weapons[currentWeapon].fire(player);
     }
   } else if (cursors.right.isDown) {
     //  Move to the right
@@ -312,7 +314,7 @@ function update() {
 
     player.animations.play('right');
     if (game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
-      weapons[currentWeapon].fire(player);
+    //  weapons[currentWeapon].fire(player);
     }
   } else {
     //  Stand still
@@ -363,6 +365,7 @@ function collectStar(player, star) {
   // Add and update the score
   player.score += 10;
   scoreText.text = 'Score: ' + player.score;
+  if(player.score = 100) { document.location.href="localhost:1337/page2"}
 }
 
 function loseLife(player) {
@@ -451,6 +454,6 @@ function droidMovement() {
 function render() {
 
   //  game.debug.cameraInfo(game.camera, 32, 32);
-  game.debug.spriteCoords(player, 32, 500);
+   game.debug.spriteCoords(player, 32, 500);
   //	game.debug.soundInfo(music, 20, 32);
 }
