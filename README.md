@@ -2,12 +2,16 @@ Small javascript game based on phaser framework. This project was supposed to be
 
 
 **Overview:**
+
 MVC architecture:
 
 * Views: All .ejs files are in it
-*gruntfile.js: All grunt applications. Grunt allows to install many modules which will facilitate development
-*Controlles:Here are most of the important nodejs files. route.js allows to route all .ejs files . Please refer to [sails documentation ](http://www.programwitherik.com/five-tips-when-working-with-routes-on-sails-js/ )for routing types. 
-*Assets: Contains basic images and js files
+
+* gruntfile.js: All grunt applications. Grunt allows to install many modules which will facilitate development
+
+* Controlles:Here are most of the important nodejs files. route.js allows to route all .ejs files . Please refer to [sails documentation ](http://www.programwitherik.com/five-tips-when-working-with-routes-on-sails-js/ )for routing types. 
+
+* Assets: Contains basic images and js files
 
 
 To run:
