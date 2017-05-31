@@ -1,5 +1,6 @@
 Small javascript game based on phaser framework. This project was supposed to be a teaser game. However it was not finished by lack of time.
 
+It does not work with sails latest version, you should probably install something before sails 0.10
 
 **Overview:**
 
